@@ -35,13 +35,15 @@ Four destinations are always available from the bottom navigation:
 | Destination | Contents |
 | --- | --- |
 | **Home** | Intro, portrait, audio introduction, quick links, featured project |
-
-On phones, the hero portrait drifts with the device's tilt once motion access is granted. iOS asks on the first tap, or use the **Enable tilt** pill under the portrait. It falls back to the existing float animation when sensors or permission are unavailable, and stays static for reduced-motion users. Sensors require HTTPS.
 | **My Journey** | Work experience timeline and education |
 | **My Work** | Project case studies with technology filters |
 | **About Me** | Summary, skills, certifications, achievements, languages, contact |
 
+On phones, the hero portrait drifts with the device's tilt once motion access is granted. iOS asks on the first tap, or use the **Enable tilt** pill under the portrait. It falls back to the existing float animation when sensors or permission are unavailable, and shows a short note when the system's Reduce Motion setting or a non-HTTPS origin prevents it. Sensors require HTTPS.
+
 Tap a timeline item or project card for a detail sheet. The theme button opens **Appearance** (three themes plus text size). Theme and text size are remembered.
+
+The interface uses a developer/AI workspace visual language: Space Grotesk display type, JetBrains Mono code labels, syntax-highlighted accents, a boot-window splash, and drifting code tokens behind the screens. Decorations are inert and hide for reduced-motion users.
 
 ### Studio (owner editing)
 
@@ -109,16 +111,19 @@ src/
   lib/
     mediaStore.js              IndexedDB helpers
     resumeParser.js            Local resume extraction and merge
+    useDeviceTilt.js           Tilt permission, baseline, smoothing, CSS vars
     utils.js                   Audio controller, contact helpers, formatting
   components/
     AudioCard.jsx              Audio empty state and player
-    PhotoFrame.jsx             Portrait framing and display
+    CodeField.jsx              Drifting syntax tokens and splash tokens
+    PhotoFrame.jsx             Portrait framing, tilt, and display
     BottomNav.jsx  TopBar.jsx  Sheet.jsx  ThemeSheet.jsx  Toast.jsx
     screens/                   Home, Journey, Work, About
     sheets/                    Detail sheets (experience, project, contact, …)
     studio/                    Five-step Studio wizard, content/media editors
   styles/
     base.css  home.css  screens.css  sheets.css  studio.css
+    dev-theme.css              Developer/AI skin, splash, syntax tokens
 ```
 
 ## Accessibility notes

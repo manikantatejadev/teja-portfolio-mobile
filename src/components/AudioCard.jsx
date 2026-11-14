@@ -59,9 +59,9 @@ export function AudioCard({
         </div>
         <div className="audio-card__title-wrap">
           <p className="eyebrow">{full ? 'Audio introduction' : 'Hear my story'}</p>
-          <h3 id={`audio-${variant}`}>
+          <h2 id={`audio-${variant}`}>
             {full ? 'Hear My Story' : 'Listen to My Introduction'}
-          </h3>
+          </h2>
           <p>{subtitle}</p>
         </div>
         {!full && onOpen ? (

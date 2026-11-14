@@ -416,19 +416,19 @@ export const THEMES = [
   {
     id: 'midnight',
     name: 'Midnight Violet',
-    description: 'Deep navy, quiet violet, and starlit contrast.',
-    colors: ['#0a0d1a', '#191f35', '#b49bff', '#f7f5ff'],
+    description: 'Ink-blue canvas, violet syntax, and cyan highlights.',
+    colors: ['#070a14', '#10162b', '#a78bfa', '#eef1ff'],
   },
   {
     id: 'pearl',
     name: 'Pearl Light',
-    description: 'Warm paper, charcoal ink, and a clear blue accent.',
-    colors: ['#f5f0e8', '#fffaf2', '#2563eb', '#222433'],
+    description: 'Light editor paper, indigo syntax, and crisp contrast.',
+    colors: ['#f4f2ec', '#fffefa', '#4f46e5', '#101320'],
   },
   {
     id: 'ocean',
     name: 'Ocean Teal',
-    description: 'Dark teal, soft aqua, and calm neutral text.',
-    colors: ['#061b1d', '#0c2b2c', '#5eead4', '#e9fbf6'],
+    description: 'Deep terminal teal, mint syntax, and calm contrast.',
+    colors: ['#03171a', '#082a2e', '#2dd4bf', '#e6fffb'],
   },
 ]

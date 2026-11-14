@@ -1,14 +1,15 @@
 import { Palette, SlidersHorizontal } from 'lucide-react'
-import { getInitials } from '../lib/utils'
 
 export function TopBar({ name, owner, onHome, onTheme, onCustomize }) {
   return (
     <header className="topbar">
-      <button className="brand" onClick={onHome} aria-label="Go to home">
-        <span className="brand__mark">{getInitials(name)}</span>
+      <button className="brand" onClick={onHome} aria-label={`${name}, go to home`}>
+        <span className="brand__mark" aria-hidden="true">
+          {'</>'}
+        </span>
         <span className="brand__text">
           <strong>{name}</strong>
-          <span>Personal portfolio</span>
+          <span aria-hidden="true">full-stack + ai</span>
         </span>
       </button>
       <div className="topbar__actions">

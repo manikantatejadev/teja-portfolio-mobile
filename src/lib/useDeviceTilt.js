@@ -34,17 +34,17 @@ export function useDeviceTilt(enabled = false) {
       return undefined
     }
 
-    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
-    if (reduceMotion) {
-      setStatus('reduced')
-      return undefined
-    }
-
     // Motion sensors are only meaningful on touch devices; desktops keep the
     // normal animated float without any permission prompts.
     const coarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches
     if (!coarsePointer) {
       setStatus('idle')
+      return undefined
+    }
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (reduceMotion) {
+      setStatus('reduced')
       return undefined
     }
 

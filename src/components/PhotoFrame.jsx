@@ -27,7 +27,10 @@ export function PhotoFrame({
     requestAccess: requestTilt,
   } = useDeviceTilt(tilt)
   const motionHint =
-    tilt && (tiltStatus === 'needs-permission' || tiltStatus === 'insecure')
+    tilt &&
+    (tiltStatus === 'needs-permission' ||
+      tiltStatus === 'insecure' ||
+      tiltStatus === 'reduced')
   const imageStyle = uploaded
     ? {
         objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`,
@@ -97,6 +100,11 @@ export function PhotoFrame({
       {tiltStatus === 'insecure' ? (
         <span className="portrait-motion portrait-motion--note">
           Motion needs HTTPS
+        </span>
+      ) : null}
+      {tiltStatus === 'reduced' ? (
+        <span className="portrait-motion portrait-motion--note">
+          Motion off in settings
         </span>
       ) : null}
     </div>
