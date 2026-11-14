@@ -1,15 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@fontsource-variable/manrope'
-import '@fontsource-variable/space-grotesk'
-import '@fontsource-variable/jetbrains-mono'
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/fraunces/wght-italic.css'
 import App from './App'
 import './styles/base.css'
 import './styles/home.css'
 import './styles/screens.css'
 import './styles/sheets.css'
 import './styles/studio.css'
-import './styles/dev-theme.css'
 
 function applySavedAppearance() {
   try {

@@ -43,7 +43,8 @@ export function AudioSheet({
         </div>
         <p>
           This uses your browser&apos;s text-to-speech voice to preview the script. It is{' '}
-          <strong>generated narration, not my voice.</strong> Nothing is uploaded.
+          <strong>not my voice, and separate from the bundled AI narration.</strong> Nothing is
+          uploaded.
         </p>
         <div className="generated-voice__actions">
           <button className="button button--secondary button--small" onClick={toggleGenerated}>
@@ -73,7 +74,13 @@ export function AudioSheet({
             <Mic size={18} />
           </span>
           <span>
-            <strong>{portfolio.audio?.key ? 'Replace or delete this recording' : 'Record or upload an introduction'}</strong>
+            <strong>
+              {portfolio.audio?.key
+                ? 'Replace or delete this recording'
+                : portfolio.audio?.builtinUrl
+                  ? 'Replace the AI narration with your own voice'
+                  : 'Record or upload an introduction'}
+            </strong>
             <span>Manage the audio and edit the transcript in Studio.</span>
           </span>
           <AudioLines size={18} />

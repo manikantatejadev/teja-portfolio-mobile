@@ -5,8 +5,7 @@
 
 :root {
   --font-sans: 'Manrope Variable', 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Space Grotesk Variable', 'Manrope Variable', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Consolas, monospace;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;

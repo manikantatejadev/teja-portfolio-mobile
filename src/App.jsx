@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Code2, Eye } from 'lucide-react'
+import { CodeXml, Eye } from 'lucide-react'
 import { BottomNav } from './components/BottomNav'
-import { CodeField, SplashTokens } from './components/CodeField'
 import { Sheet } from './components/Sheet'
 import { ThemeSheet } from './components/ThemeSheet'
 import { Toast } from './components/Toast'
@@ -30,69 +29,6 @@ const THEME_KEY = 'manikanta-portfolio-theme'
 const TEXT_SIZE_KEY = 'manikanta-portfolio-text-size'
 const VALID_ROUTES = new Set(['home', 'journey', 'work', 'about'])
 const VALID_THEMES = new Set(['midnight', 'pearl', 'ocean'])
-
-function BootCode({ portfolio }) {
-  const name = portfolio?.identity?.name || 'Manikanta Teja'
-  const lines = [
-    <span key="line-1">
-      <span className="tk-kw">const</span> <span className="tk-var">developer</span>{' '}
-      <span className="tk-punct">=</span> <span className="tk-punct">{'{'}</span>
-    </span>,
-    <span key="line-2">
-      {'  '}
-      <span className="tk-prop">name</span>
-      <span className="tk-punct">:</span> <span className="tk-str">'{name}'</span>
-      <span className="tk-punct">,</span>
-    </span>,
-    <span key="line-3">
-      {'  '}
-      <span className="tk-prop">role</span>
-      <span className="tk-punct">:</span>{' '}
-      <span className="tk-str">&apos;.NET Full Stack Developer&apos;</span>
-      <span className="tk-punct">,</span>
-    </span>,
-    <span key="line-4">
-      {'  '}
-      <span className="tk-prop">stack</span>
-      <span className="tk-punct">:</span> <span className="tk-punct">[</span>
-      <span className="tk-str">&apos;C#&apos;</span>
-      <span className="tk-punct">,</span> <span className="tk-str">&apos;React.js&apos;</span>
-      <span className="tk-punct">,</span> <span className="tk-str">&apos;SQL Server&apos;</span>
-      <span className="tk-punct">]</span>
-      <span className="tk-punct">,</span>
-    </span>,
-    <span key="line-5">
-      {'  '}
-      <span className="tk-prop">aiTools</span>
-      <span className="tk-punct">:</span> <span className="tk-punct">[</span>
-      <span className="tk-str">&apos;Cursor&apos;</span>
-      <span className="tk-punct">,</span> <span className="tk-str">&apos;Copilot&apos;</span>
-      <span className="tk-punct">,</span> <span className="tk-str">&apos;Codex&apos;</span>
-      <span className="tk-punct">]</span>
-      <span className="tk-punct">,</span>
-    </span>,
-    <span key="line-6">
-      {'  '}
-      <span className="tk-prop">status</span>
-      <span className="tk-punct">:</span> <span className="tk-str">&apos;shipping&apos;</span>
-      <span className="tk-punct">,</span>
-    </span>,
-    <span key="line-7">
-      <span className="tk-punct">{'}'}</span>
-    </span>,
-  ]
-
-  return (
-    <>
-      {lines.map((content, index) => (
-        <div className="boot-line" style={{ '--i': index }} key={index}>
-          <span className="boot-line__num">{String(index + 1).padStart(2, '0')}</span>
-          <code className="boot-line__code">{content}</code>
-        </div>
-      ))}
-    </>
-  )
-}
 
 function mergeWithDefaults(saved) {
   const defaults = createDefaultPortfolio()
@@ -213,7 +149,7 @@ export default function App() {
     } catch {
       // Theme still applies for this session.
     }
-    const colors = { midnight: '#070a14', pearl: '#f4f2ec', ocean: '#03171a' }
+    const colors = { midnight: '#0a0d1a', pearl: '#f5f0e8', ocean: '#061b1d' }
     document
       .querySelector('meta[name="theme-color"]')
       ?.setAttribute('content', colors[theme] || colors.midnight)
@@ -244,6 +180,7 @@ export default function App() {
 
   const photoKey = portfolio.photo?.key || ''
   const audioKey = portfolio.audio?.key || ''
+  const audioBuiltin = portfolio.audio?.builtinUrl || ''
   const resumeKey = portfolio.resume?.key || ''
   const resumeBuiltin = portfolio.resume?.builtinUrl || ''
 
@@ -255,7 +192,7 @@ export default function App() {
       setMediaLoading(true)
       const [photo, audio, resume] = await Promise.allSettled([
         photoKey ? getMediaUrl(photoKey) : Promise.resolve(null),
-        audioKey ? getMediaUrl(audioKey) : Promise.resolve(null),
+        audioKey ? getMediaUrl(audioKey) : Promise.resolve(audioBuiltin || null),
         resumeKey ? getMediaUrl(resumeKey) : Promise.resolve(resumeBuiltin || null),
       ])
 
@@ -283,7 +220,7 @@ export default function App() {
 
     hydrate().catch(() => {
       if (!cancelled) {
-        setMediaUrls({ photo: null, audio: null, resume: resumeBuiltin || null })
+        setMediaUrls({ photo: null, audio: audioBuiltin || null, resume: resumeBuiltin || null })
         setMediaLoading(false)
         setMediaReady(true)
       }
@@ -293,7 +230,7 @@ export default function App() {
       cancelled = true
       for (const url of created) URL.revokeObjectURL(url)
     }
-  }, [photoKey, audioKey, resumeKey, resumeBuiltin])
+  }, [photoKey, audioKey, audioBuiltin, resumeKey, resumeBuiltin])
 
   useEffect(() => {
     const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
@@ -561,7 +498,6 @@ export default function App() {
         <span className="ambient__orb ambient__orb--one" />
         <span className="ambient__orb ambient__orb--two" />
         <span className="ambient__grid" />
-        <CodeField />
       </div>
 
       <div className={`app-shell ${booted ? 'is-ready' : 'is-booting'}`}>
@@ -622,36 +558,12 @@ export default function App() {
 
       {splashMounted ? (
         <div className={`splash ${booted ? 'is-done' : ''}`} aria-hidden="true">
-          <SplashTokens />
-          <div className="boot-window">
-            <div className="boot-window__bar">
-              <span className="boot-window__dots">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className="boot-window__file">
-                <Code2 size={12} />
-                portfolio.tsx
-              </span>
-              <span className="boot-window__branch">main</span>
-            </div>
-            <div className="boot-window__body">
-              <BootCode portfolio={portfolio} />
-              <div
-                className="boot-window__status"
-                style={{ '--i': 7 }}
-              >
-                <span className="boot-window__pulse" />
-                <span>compiling portfolio</span>
-                <span className="boot-window__caret" />
-              </div>
-            </div>
+          <div className="splash__code">
+            <CodeXml strokeWidth={1.5} />
+            <span className="splash__caret" />
           </div>
-          <p className="boot-signature">
-            {portfolio.identity.name}
-            <span> // full-stack + ai</span>
-          </p>
+          <span className="splash__name">{portfolio.identity.name}</span>
+          <span className="splash__rule" />
         </div>
       ) : null}
     </div>

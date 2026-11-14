@@ -44,9 +44,12 @@ export function AudioCard({
 }) {
   const [transcriptOpen, setTranscriptOpen] = useState(false)
   const full = variant === 'full'
-  const hasAudio = Boolean(audioUrl && portfolio.audio?.key)
+  const hasAudio = Boolean(audioUrl && (portfolio.audio?.key || portfolio.audio?.builtinUrl))
+  const aiNarration = Boolean(!portfolio.audio?.key && portfolio.audio?.builtinUrl)
   const subtitle = hasAudio
-    ? 'A personal introduction, in my own words.'
+    ? aiNarration
+      ? 'An AI-generated narration of my introduction, not a recording of my voice.'
+      : 'A personal introduction, in my own words.'
     : 'Add a voice note and let people hear the person behind the profile.'
   const progress = audio.duration ? Math.min(100, (audio.currentTime / audio.duration) * 100) : 0
 
@@ -59,9 +62,9 @@ export function AudioCard({
         </div>
         <div className="audio-card__title-wrap">
           <p className="eyebrow">{full ? 'Audio introduction' : 'Hear my story'}</p>
-          <h2 id={`audio-${variant}`}>
+          <h3 id={`audio-${variant}`}>
             {full ? 'Hear My Story' : 'Listen to My Introduction'}
-          </h2>
+          </h3>
           <p>{subtitle}</p>
         </div>
         {!full && onOpen ? (
@@ -130,7 +133,7 @@ export function AudioCard({
             </button>
             {full ? (
               <span className="audio-tools__meta">
-                <Volume2 size={14} /> Personal recording
+                <Volume2 size={14} /> {aiNarration ? 'AI-generated narration' : 'Personal recording'}
               </span>
             ) : null}
             {!full && onOpen ? (
@@ -183,6 +186,12 @@ export function AudioCard({
       {transcriptOpen ? (
         <div className="transcript">
           <p>{portfolio.audio?.transcript || 'No introduction script has been written yet.'}</p>
+          {aiNarration ? (
+            <p className="transcript__note">
+              This narration is AI-generated from the script above. It is not a recording of my
+              voice.
+            </p>
+          ) : null}
           {!hasAudio ? (
             <p className="transcript__note">
               This is a draft script, generated from the resume and kept on this device. It is not

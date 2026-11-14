@@ -34,16 +34,16 @@ Four destinations are always available from the bottom navigation:
 
 | Destination | Contents |
 | --- | --- |
-| **Home** | Intro, portrait, audio introduction, quick links, featured project |
+| **Home** | Intro, portrait, AI narration, quick links, featured project |
 | **My Journey** | Work experience timeline and education |
 | **My Work** | Project case studies with technology filters |
 | **About Me** | Summary, skills, certifications, achievements, languages, contact |
 
-On phones, the hero portrait drifts with the device's tilt once motion access is granted. iOS asks on the first tap, or use the **Enable tilt** pill under the portrait. It falls back to the existing float animation when sensors or permission are unavailable, and shows a short note when the system's Reduce Motion setting or a non-HTTPS origin prevents it. Sensors require HTTPS.
-
 Tap a timeline item or project card for a detail sheet. The theme button opens **Appearance** (three themes plus text size). Theme and text size are remembered.
 
-The interface uses a developer/AI workspace visual language: Space Grotesk display type, JetBrains Mono code labels, syntax-highlighted accents, a boot-window splash, and drifting code tokens behind the screens. Decorations are inert and hide for reduced-motion users.
+On phones, the hero portrait drifts with the device's tilt once motion access is granted (iOS asks on the first tap). It falls back to the existing float animation when sensors or permission are unavailable, and stays static for reduced-motion users. Sensors require HTTPS.
+
+The introduction is an **AI-generated male narration** of the shipped script, bundled as an MP3. It is labeled as generated speech everywhere it appears and is never presented as the owner's own voice. Nothing autoplays.
 
 ### Studio (owner editing)
 
@@ -60,6 +60,7 @@ Open **Customize portfolio** in the top bar. The five-step wizard works entirely
 ### Replacing the default assets
 
 - **Portrait placeholder:** replace `public/avatar-illustration.svg` with another SVG/PNG and update the `photo.src` value in `src/data/defaultPortfolio.js` if the filename changes.
+- **Bundled AI narration:** replace `public/audio/introduction.mp3` with another recording, or change `audio.builtinUrl`, `audio.generated`, and `audio.voice` in `src/data/defaultPortfolio.js`. The narration is generated from `AUDIO_SCRIPT` in the same file, so update the script and regenerate the MP3 together. Uploaded audio in Studio overrides the bundled file for that browser only.
 - **Bundled resume:** replace `public/Manikanta_Teja_Resume.pdf`. Keep the same filename, or update `resume.builtinUrl` / `resume.fileName` in `src/data/defaultPortfolio.js`.
 - **Default content:** edit `src/data/defaultPortfolio.js` for the shipped resume content, section definitions, themes, and the introduction script.
 
@@ -77,7 +78,7 @@ Nothing is uploaded to a server. All processing happens in the browser.
 | Photo, audio, uploaded resume | `IndexedDB` database `manikanta-portfolio-media` |
 
 - Audio never autoplays.
-- Device-voice narration is clearly labeled as generated speech, not the owner's voice.
+- The bundled introduction is AI-generated narration (Microsoft Prabhat, `en-IN` male, +8% rate), labeled as generated speech — never as the owner's voice. The device-voice preview in Studio is a separate browser speech synthesis and is labeled the same way.
 - Contact copy uses the Clipboard API with a manual fallback.
 - Resume and contact actions open real `mailto:`, `tel:`, and external links; there is no simulated messaging.
 
@@ -111,19 +112,16 @@ src/
   lib/
     mediaStore.js              IndexedDB helpers
     resumeParser.js            Local resume extraction and merge
-    useDeviceTilt.js           Tilt permission, baseline, smoothing, CSS vars
     utils.js                   Audio controller, contact helpers, formatting
   components/
     AudioCard.jsx              Audio empty state and player
-    CodeField.jsx              Drifting syntax tokens and splash tokens
-    PhotoFrame.jsx             Portrait framing, tilt, and display
+    PhotoFrame.jsx             Portrait framing and display
     BottomNav.jsx  TopBar.jsx  Sheet.jsx  ThemeSheet.jsx  Toast.jsx
     screens/                   Home, Journey, Work, About
     sheets/                    Detail sheets (experience, project, contact, …)
     studio/                    Five-step Studio wizard, content/media editors
   styles/
     base.css  home.css  screens.css  sheets.css  studio.css
-    dev-theme.css              Developer/AI skin, splash, syntax tokens
 ```
 
 ## Accessibility notes

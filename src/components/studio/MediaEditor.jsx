@@ -57,7 +57,8 @@ export function MediaEditor({
   const [photoError, setPhotoError] = useState('')
   const speech = useSpeechPreview(draft.audio?.transcript || '')
   const hasPhoto = Boolean(draft.photo?.key)
-  const hasAudio = Boolean(draft.audio?.key)
+  const hasAudio = Boolean(draft.audio?.key || draft.audio?.builtinUrl)
+  const bundledAudio = Boolean(!draft.audio?.key && draft.audio?.builtinUrl)
   const hasResume = Boolean(draft.resume?.builtinUrl || draft.resume?.key)
 
   useEffect(() => {
@@ -424,7 +425,7 @@ export function MediaEditor({
                   </>
                 ) : (
                   <>
-                    <Check size={14} /> Audio attached
+                    <Check size={14} /> {bundledAudio ? 'AI narration bundled' : 'Audio attached'}
                   </>
                 )}
               </span>
@@ -437,21 +438,28 @@ export function MediaEditor({
             <audio ref={previewAudioRef} controls src={audioUrl} preload="metadata" />
             <div className="audio-file-preview__meta">
               <span>
-                <Waves size={15} /> {draft.audio.fileName || 'Introduction'}
+                <Waves size={15} />{' '}
+                {draft.audio.key
+                  ? draft.audio.fileName || 'Introduction'
+                  : 'AI-generated narration'}
               </span>
-              <button
-                className="text-button text-button--danger"
-                onClick={async () => {
-                  previewAudioRef.current?.pause()
-                  await onAudioRemove()
-                  onToast?.({ type: 'info', message: 'Audio introduction removed.' })
-                }}
-              >
-                <Trash2 size={14} /> Delete
-              </button>
+              {draft.audio.key ? (
+                <button
+                  className="text-button text-button--danger"
+                  onClick={async () => {
+                    previewAudioRef.current?.pause()
+                    await onAudioRemove()
+                    onToast?.({ type: 'info', message: 'Audio introduction removed.' })
+                  }}
+                >
+                  <Trash2 size={14} /> Delete
+                </button>
+              ) : null}
             </div>
             <p className="fine-print">
-              This is the actual recording stored locally. Preview it before saving your portfolio.
+              {bundledAudio
+                ? 'This bundled AI narration plays for visitors. Upload or record a file to replace it.'
+                : 'This is the actual recording stored locally. Preview it before saving your portfolio.'}
             </p>
           </div>
         ) : hasAudio ? (
