@@ -1,4 +1,5 @@
-import { Camera, Expand } from 'lucide-react'
+import { Camera, Expand, Smartphone } from 'lucide-react'
+import { useDeviceTilt } from '../lib/useDeviceTilt'
 
 function pickBadges(portfolio) {
   const items = (portfolio?.skills || []).flatMap((group) => group.items || [])
@@ -15,10 +16,18 @@ export function PhotoFrame({
   owner,
   compact = false,
   portraitOnly = false,
+  tilt = false,
 }) {
   const photo = portfolio.photo || {}
   const uploaded = Boolean(photoUrl)
   const badges = pickBadges(portfolio)
+  const {
+    ref: tiltRef,
+    status: tiltStatus,
+    requestAccess: requestTilt,
+  } = useDeviceTilt(tilt)
+  const motionHint =
+    tilt && (tiltStatus === 'needs-permission' || tiltStatus === 'insecure')
   const imageStyle = uploaded
     ? {
         objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`,
@@ -27,7 +36,12 @@ export function PhotoFrame({
     : undefined
 
   return (
-    <div className={`portrait-stage ${compact ? 'portrait-stage--compact' : ''}`}>
+    <div
+      ref={tiltRef}
+      className={`portrait-stage ${compact ? 'portrait-stage--compact' : ''} ${
+        motionHint ? 'portrait-stage--motion-hint' : ''
+      }`}
+    >
       <div className="portrait-halo" aria-hidden="true" />
       <div className="portrait-ring portrait-ring--one" aria-hidden="true" />
       <div className="portrait-ring portrait-ring--two" aria-hidden="true" />
@@ -73,6 +87,18 @@ export function PhotoFrame({
 
       <span className="portrait-spark portrait-spark--one" aria-hidden="true" />
       <span className="portrait-spark portrait-spark--two" aria-hidden="true" />
+
+      {tiltStatus === 'needs-permission' ? (
+        <button type="button" className="portrait-motion" onClick={requestTilt}>
+          <Smartphone size={13} aria-hidden="true" />
+          Enable tilt
+        </button>
+      ) : null}
+      {tiltStatus === 'insecure' ? (
+        <span className="portrait-motion portrait-motion--note">
+          Motion needs HTTPS
+        </span>
+      ) : null}
     </div>
   )
 }

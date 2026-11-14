@@ -81,6 +81,7 @@ export function Home({
             onOpen={() => openSheet({ type: 'portrait' })}
             onEditPhoto={onEditPhoto}
             owner={owner}
+            tilt
           />
         </div>
 

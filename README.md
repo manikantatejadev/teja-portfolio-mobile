@@ -35,6 +35,8 @@ Four destinations are always available from the bottom navigation:
 | Destination | Contents |
 | --- | --- |
 | **Home** | Intro, portrait, audio introduction, quick links, featured project |
+
+On phones, the hero portrait drifts with the device's tilt once motion access is granted. iOS asks on the first tap, or use the **Enable tilt** pill under the portrait. It falls back to the existing float animation when sensors or permission are unavailable, and stays static for reduced-motion users. Sensors require HTTPS.
 | **My Journey** | Work experience timeline and education |
 | **My Work** | Project case studies with technology filters |
 | **About Me** | Summary, skills, certifications, achievements, languages, contact |

@@ -96,6 +96,7 @@
     0 24px 70px rgba(0, 0, 0, 0.26),
     inset 0 0 0 6px color-mix(in srgb, var(--bg) 55%, transparent);
   animation: portraitFloat 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 .portrait-frame::after {
@@ -232,6 +233,49 @@
   width: 3px;
   height: 3px;
   animation: sparkPulse 4s 1.7s ease-in-out infinite;
+}
+
+.portrait-motion {
+  position: absolute;
+  left: 50%;
+  bottom: -44px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--glass-strong);
+  color: var(--muted);
+  box-shadow: var(--shadow-soft);
+  font-size: 0.6rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.portrait-motion svg {
+  color: var(--accent);
+}
+
+.portrait-motion:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--surface-3);
+}
+
+.portrait-motion--note {
+  color: var(--faint);
+  pointer-events: none;
+}
+
+.portrait-stage--motion-hint {
+  margin-bottom: 66px;
 }
 
 /* Identity --------------------------------------------------- */
@@ -990,10 +1034,16 @@
 @keyframes portraitFloat {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate3d(var(--tilt-x, 0px), var(--tilt-y, 0px), 0)
+      rotate(var(--tilt-rotate, 0deg));
   }
   50% {
-    transform: translateY(-6px);
+    transform: translate3d(
+        var(--tilt-x, 0px),
+        calc(var(--tilt-y, 0px) - 6px),
+        0
+      )
+      rotate(var(--tilt-rotate, 0deg));
   }
 }
 
