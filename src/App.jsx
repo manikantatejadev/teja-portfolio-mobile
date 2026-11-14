@@ -56,6 +56,14 @@ function mergeWithDefaults(saved) {
     resume: { ...defaults.resume, ...(saved.resume || {}) },
   }
 
+  // The bundled narration is shipped with the app, so its URL and voice description always
+  // come from the current defaults. Only an uploaded file (a key) overrides it.
+  if (!merged.audio.key) {
+    merged.audio.builtinUrl = defaults.audio.builtinUrl
+    merged.audio.generated = defaults.audio.generated
+    merged.audio.voice = defaults.audio.voice
+  }
+
   for (const definition of SECTION_DEFINITIONS) {
     if (!merged.sections.order.includes(definition.id)) {
       merged.sections.order.push(definition.id)
